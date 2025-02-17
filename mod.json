@@ -1,14 +1,14 @@
 {
-    "geode": "4.0.1",
+    "geode": "4.2.0",
     "gd": {
         "android": "2.2074",
         "win": "2.2074",
         "mac": "2.2074"
     },
-    "version": "v1.1.0",
+    "version": "v1.1.1",
     "id": "hiimjustin000.manager_viewer",
     "name": "Library Viewer",
-    "developer": "hiimjustin000",
+    "developer": "hiimjasmine00",
     "description": "A mod that allows viewing of DLLs in-game.",
     "resources": {
         "sprites": [
@@ -18,22 +18,16 @@
             "resources/*.ttf"
         ]
     },
-    "dependencies": [
-        {
-            "id": "geode.custom-keybinds",
-            "version": ">=v1.7.1",
-            "importance": "required",
-            "platforms": ["win"]
-        },
-        {
-            "id": "geode.devtools",
-            "version": ">=v1.7.0",
-            "importance": "recommended"
+    "dependencies": {
+        "geode.custom-keybinds": ">=v1.7.1",
+        "geode.devtools": {
+            "importance": "recommended",
+            "version": ">=v1.7.0"
         }
-    ],
+    },
     "links": {
         "community": "https://discord.gg/QVKmbvBXA7",
-        "source": "https://github.com/hiimjustin000/ManagerViewer",
+        "source": "https://github.com/hiimjasmine00/ManagerViewer",
         "homepage": "https://www.hiimjustin000.com"
     },
     "tags": [

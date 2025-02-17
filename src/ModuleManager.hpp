@@ -2,6 +2,7 @@
 
 struct ModuleAndAddress {
     std::string name;
+    std::string fullName;
     uintptr_t address;
 };
 

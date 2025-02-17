@@ -1,10 +1,9 @@
-#ifdef GEODE_IS_WINDOWS
 #include <geode.custom-keybinds/include/Keybinds.hpp>
-#endif
 #include <imgui-cocos.hpp>
 #include "ModuleManager.hpp"
 
 using namespace geode::prelude;
+using namespace keybinds;
 
 // ImGui Cocos is a library that initializes Dear ImGui for Cocos2d-x.
 // Special thanks to Prevter for giving me the example code to use ImGui with Cocos2d-x.
@@ -12,9 +11,6 @@ using namespace geode::prelude;
 static ImFont* openSans = nullptr;
 
 $execute {
-    #ifdef GEODE_IS_WINDOWS
-    using namespace keybinds;
-
     BindManager::get()->registerBindable({
         "view-managers"_spr,
         "View Libraries",
@@ -22,6 +18,7 @@ $execute {
         { Keybind::create(KEY_Y, Modifier::Alt) },
         "Library Viewer"
     });
+
     new EventListener([=](InvokeBindEvent* event) {
         if (event->isDown()) {
             auto& imgui = ImGuiCocos::get();
@@ -30,7 +27,7 @@ $execute {
         }
         return ListenerResult::Propagate;
     }, InvokeBindFilter(nullptr, "view-managers"_spr));
-    #endif
+
     ImGuiCocos::get()
         .setup([]{
             openSans = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "opensans.ttf").string().c_str(), 20.0f);
@@ -46,7 +43,9 @@ $execute {
                     auto ptr = module.address != 0 ? fmt::format("0x{:x}", module.address) : "[NULL]";
                     ImGui::Text("%s: %s", module.name.c_str(), ptr.c_str());
                     ImGui::SameLine();
-                    if (ImGui::Button(fmt::format("Copy##{}", i).c_str())) clipboard::write(ptr);
+                    if (ImGui::Button(fmt::format("Copy Address##{}", i).c_str())) clipboard::write(ptr);
+                    ImGui::SameLine();
+                    if (ImGui::Button(fmt::format("Copy Name##{}", i).c_str())) clipboard::write(module.fullName);
                 }
 
                 if (ImGui::Button("Close")) ImGuiCocos::get().setVisible(false);

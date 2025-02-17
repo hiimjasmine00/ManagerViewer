@@ -12,8 +12,11 @@ using namespace geode::prelude;
 
 #ifdef GEODE_IS_ANDROID
 int iterateDLPhdr(struct dl_phdr_info* info, size_t size, void* data) {
-    if (info->dlpi_name)
-        ((std::vector<ModuleAndAddress>*)data)->push_back({ std::filesystem::path(info->dlpi_name).filename().string(), (uintptr_t)info->dlpi_addr });
+    if (info->dlpi_name) ((std::vector<ModuleAndAddress>*)data)->push_back({
+        std::filesystem::path(info->dlpi_name).filename().string(),
+        info->dlpi_name,
+        (uintptr_t)info->dlpi_addr
+    });
     return 0;
 }
 #endif
@@ -35,6 +38,7 @@ void ModuleManager::init() {
                 if (GetModuleFileNameExA(process, hMods[i], szModName, sizeof(szModName))) {
                     m_modules.push_back({
                         std::filesystem::path(szModName).filename().string(),
+                        szModName,
                         (uintptr_t)hMods[i]
                     });
                 }
@@ -45,10 +49,11 @@ void ModuleManager::init() {
     #elif defined(GEODE_IS_MACOS) || defined(GEODE_IS_IOS)
     uint32_t count = _dyld_image_count();
     for (uint32_t i = 0; i < count; i++) {
-        std::string filename = std::filesystem::path(_dyld_get_image_name(i)).filename().string();
+        std::string fullName = _dyld_get_image_name(i);
+        std::string filename = std::filesystem::path(fullName).filename().string();
         uintptr_t address = _dyld_get_image_vmaddr_slide(i);
         if (!string::endsWith(filename, ".dylib")) address += 0x100000000;
-        m_modules.push_back({ filename, address });
+        m_modules.push_back({ filename, fullName, address });
     }
     #elif defined(GEODE_IS_ANDROID)
     dl_iterate_phdr(iterateDLPhdr, &m_modules);

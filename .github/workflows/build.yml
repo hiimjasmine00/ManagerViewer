@@ -38,6 +38,7 @@ jobs:
         with:
           build-config: ${{ matrix.config.build-config || 'Release' }}
           export-pdb: true
+          export-symbols: true
           combine: true
           target: ${{ matrix.config.target }}
 

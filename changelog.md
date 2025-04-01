@@ -1,4 +1,7 @@
 # Library Viewer Changelog
+## v1.1.1 (2025-04-01)
+- Added "Copy Name" and "Copy Path" buttons to the library list
+
 ## v1.1.0 (2024-12-01)
 - Ported to Geometry Dash v2.207
 - Rebranded the mod from "Manager Viewer" to "Library Viewer"

@@ -1,6 +1,8 @@
+#include "ModuleManager.hpp"
+#include <Geode/modify/MenuLayer.hpp>
+#include <Geode/ui/BasedButtonSprite.hpp>
 #include <geode.custom-keybinds/include/Keybinds.hpp>
 #include <imgui-cocos.hpp>
-#include "ModuleManager.hpp"
 
 using namespace geode::prelude;
 using namespace keybinds;
@@ -45,7 +47,9 @@ $execute {
                     ImGui::SameLine();
                     if (ImGui::Button(fmt::format("Copy Address##{}", i).c_str())) clipboard::write(ptr);
                     ImGui::SameLine();
-                    if (ImGui::Button(fmt::format("Copy Name##{}", i).c_str())) clipboard::write(module.fullName);
+                    if (ImGui::Button(fmt::format("Copy Name##{}", i).c_str())) clipboard::write(module.name);
+                    ImGui::SameLine();
+                    if (ImGui::Button(fmt::format("Copy Path##{}", i).c_str())) clipboard::write(module.fullName);
                 }
 
                 if (ImGui::Button("Close")) ImGuiCocos::get().setVisible(false);
@@ -57,7 +61,6 @@ $execute {
         .setVisible(false);
 }
 
-#include <Geode/modify/MenuLayer.hpp>
 class $modify(LVMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;

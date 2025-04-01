@@ -1,5 +1,8 @@
 // ModuleManager stores all the modules (be they .dlls, .so's, or .dylibs) that are loaded into the process, along with their base addresses.
 
+#include <string>
+#include <vector>
+
 struct ModuleAndAddress {
     std::string name;
     std::string fullName;

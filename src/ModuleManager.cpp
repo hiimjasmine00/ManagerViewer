@@ -1,10 +1,8 @@
 #include "ModuleManager.hpp"
 #include <filesystem>
-#include <Geode/platform/cplatform.h>
+#include <Geode/platform/platform.hpp>
 #if defined(GEODE_IS_WINDOWS)
 #include <Psapi.h>
-#elif defined(GEODE_IS_MACOS) || defined(GEODE_IS_IOS)
-#include <mach-o/dyld.h>
 #elif defined(GEODE_IS_ANDROID)
 #include <link.h>
 #endif

@@ -7,17 +7,6 @@
 #include <link.h>
 #endif
 
-#ifdef GEODE_IS_ANDROID
-int iterateDLPhdr(struct dl_phdr_info* info, size_t size, void* data) {
-    if (info->dlpi_name) ((std::vector<ModuleAndAddress>*)data)->push_back({
-        std::filesystem::path(info->dlpi_name).filename().string(),
-        info->dlpi_name,
-        (uintptr_t)info->dlpi_addr
-    });
-    return 0;
-}
-#endif
-
 void ModuleManager::init() {
     m_modules.clear();
 
@@ -36,7 +25,7 @@ void ModuleManager::init() {
                     m_modules.push_back({
                         std::filesystem::path(szModName).filename().string(),
                         szModName,
-                        (uintptr_t)hMods[i]
+                        reinterpret_cast<uintptr_t>(hMods[i])
                     });
                 }
             }
@@ -54,6 +43,13 @@ void ModuleManager::init() {
         });
     }
     #elif defined(GEODE_IS_ANDROID)
-    dl_iterate_phdr(iterateDLPhdr, &m_modules);
+    dl_iterate_phdr([](dl_phdr_info* info, size_t, void* data) {
+        if (info->dlpi_name) (reinterpret_cast<std::vector<ModuleAndAddress>*>(data))->push_back({
+            std::filesystem::path(info->dlpi_name).filename().string(),
+            info->dlpi_name,
+            (uintptr_t)info->dlpi_addr
+        });
+        return 0;
+    }, &m_modules);
     #endif
 }

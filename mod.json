@@ -3,9 +3,10 @@
     "gd": {
         "android": "2.2074",
         "win": "2.2074",
-        "mac": "2.2074"
+        "mac": "2.2074",
+        "ios": "2.2074"
     },
-    "version": "v1.1.1",
+    "version": "v1.1.2",
     "id": "hiimjustin000.manager_viewer",
     "name": "Library Viewer",
     "developer": "hiimjasmine00",
@@ -19,7 +20,11 @@
         ]
     },
     "dependencies": {
-        "geode.custom-keybinds": ">=v1.7.1",
+        "geode.custom-keybinds": {
+            "importance": "required",
+            "version": ">=v1.7.1",
+            "platforms": ["win", "android", "mac"]
+        },
         "geode.devtools": {
             "importance": "recommended",
             "version": ">=v1.7.0"

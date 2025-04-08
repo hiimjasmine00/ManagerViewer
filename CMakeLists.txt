@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 3.21)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
+if ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS" OR IOS)
+    set(CMAKE_OSX_ARCHITECTURES "arm64")
+else()
+    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
+endif()
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(GEODE_DISABLE_PRECOMPILED_HEADERS ON)
 
-project(ManagerViewer VERSION 1.1.1)
+project(ManagerViewer VERSION 1.1.2)
 
 add_library(${PROJECT_NAME} SHARED
     src/main.cpp
@@ -20,8 +24,14 @@ endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 
-set(IMGUI_VERSION "v1.91.4")
-CPMAddPackage("gh:matcool/gd-imgui-cocos#8973953")
+# Fix annoying compiler errors with Dear ImGui
+if (WIN32 AND NOT MSVC)
+    # Use builtin offsetof and disable SSE
+    target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_USE_BUILTIN_OFFSETOF IMGUI_DISABLE_SSE)
+endif()
+
+set(IMGUI_VERSION "v1.91.9b")
+CPMAddPackage("gh:matcool/gd-imgui-cocos#1ae8317")
 
 target_link_libraries(${PROJECT_NAME} imgui-cocos)
 

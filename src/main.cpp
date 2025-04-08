@@ -1,11 +1,15 @@
 #include "ModuleManager.hpp"
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/ui/BasedButtonSprite.hpp>
+#ifndef GEODE_IS_IOS
 #include <geode.custom-keybinds/include/Keybinds.hpp>
+#endif
 #include <imgui-cocos.hpp>
 
 using namespace geode::prelude;
+#ifndef GEODE_IS_IOS
 using namespace keybinds;
+#endif
 
 // ImGui Cocos is a library that initializes Dear ImGui for Cocos2d-x.
 // Special thanks to Prevter for giving me the example code to use ImGui with Cocos2d-x.
@@ -13,6 +17,7 @@ using namespace keybinds;
 static ImFont* openSans = nullptr;
 
 $execute {
+    #ifndef GEODE_IS_IOS
     BindManager::get()->registerBindable({
         "view-managers"_spr,
         "View Libraries",
@@ -29,6 +34,7 @@ $execute {
         }
         return ListenerResult::Propagate;
     }, InvokeBindFilter(nullptr, "view-managers"_spr));
+    #endif
 
     ImGuiCocos::get()
         .setup([]{

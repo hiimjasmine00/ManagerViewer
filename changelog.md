@@ -1,4 +1,7 @@
 # Library Viewer Changelog
+## v1.1.2 (2025-04-07)
+- Added support for iOS
+
 ## v1.1.1 (2025-04-01)
 - Added "Copy Name" and "Copy Path" buttons to the library list
 
